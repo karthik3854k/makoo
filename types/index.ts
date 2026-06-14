@@ -242,11 +242,9 @@ export interface User {
 }
 
 export interface AuthResponse {
-  message: {
-    success: boolean;
-    user?: User;
-    error?: string;
-  };
+  message: string;
+  home_page: string;
+  full_name: string;
 }
 
 export interface ApiError {

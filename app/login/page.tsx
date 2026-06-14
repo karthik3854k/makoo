@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
+
   const validate = () => {
     const newErrors: typeof errors = {};
 
@@ -39,14 +40,32 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       const response = await authService.login(email, password);
-      if (response.message?.success && response.message.user) {
-        setUser(response.message.user);
-        toast.success('Welcome back!');
+      console.log("login response", response);
+
+      // Frappe returns:
+      // {
+      //   message: "Logged In",
+      //   home_page: "/app",
+      //   full_name: "Karthik Polisetty"
+      // }
+
+      if (response.message === "Logged In") {
+        const user = {
+          email,
+          full_name: response.full_name,
+          home_page: response.home_page,
+        };
+
+        setUser(user);
+
+        toast.success(`Welcome back, ${response.full_name}!`);
+
         router.push('/account');
       } else {
-        toast.error(response.message?.error || 'Login failed');
+        toast.error('Login failed');
       }
     } catch (error) {
+      console.error("Login error:", error);
       toast.error('Invalid email or password');
     } finally {
       setIsLoading(false);

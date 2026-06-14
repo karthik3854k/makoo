@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import NavbarFooter from '@/components/ui/loading';
+import NavbarOnly from '@/components/ui/loading';
+import dynamic from 'next/dynamic';
 import SearchModal from '@/components/common/SearchModal';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { Toaster } from '@/components/ui/sonner';
+
+const Footer = dynamic(() => import('@/components/layout/Footer'), { ssr: false });
 
 export const metadata: Metadata = {
   title: 'Makoo - DIY Customization Products',
@@ -48,10 +51,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
-        <NavbarFooter />
+        <NavbarOnly />
         <SearchModal />
         <CartDrawer />
         <main className="flex-1">{children}</main>
+        <Footer />
         <Toaster position="top-center" richColors />
       </body>
     </html>
