@@ -65,11 +65,19 @@ export default function RegisterPage() {
 
       // Auto login after registration
       const loginRes = await authService.login(formData.email, formData.password);
-      if (loginRes.message?.success && loginRes.message.user) {
-        setUser(loginRes.message.user);
+      if (loginRes.message === "Logged In") {
+        const user = {
+            email: formData.email,
+            full_name: loginRes.full_name,
+            home_page: loginRes.home_page,
+        };
+
+        setUser(user);
+
         toast.success('Account created successfully!');
+
         router.push('/account');
-      } else {
+    } else {
         toast.success('Account created! Please login.');
         router.push('/login');
       }
